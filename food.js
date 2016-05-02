@@ -1,21 +1,13 @@
 function afterLoad () {
 
-	console.log("IN after load");
 	var foodList = JSON.parse(this.responseText);
 
+	// Load the dog list in
 	if (foodList.dog_brands) {
-		console.log("Dog");
 		foodInject(foodList.dog_brands);
-	} else {
-		console.log(foodList)
-		console.log("Cat");
+	} else { // Or load the cat list
+		foodInject(foodList.brands)
 	}
-
-	
-
-	// this listens for one of the buttons to be pressed and launches the function to delete it from the list
-	// document.getElementById("playback").addEventListener("click", songDelete);
-	// document.getElementById("playback").addEventListener("click", moreSongs);
 }
 
 function ifXHRFails() {
@@ -24,9 +16,6 @@ function ifXHRFails() {
 
 function foodInject(foodList) {
 
-	console.log("IN Foodinject");
-
-	
 	var content = document.getElementById("foodSquare");
 
 	// inject food content back into the DOM
@@ -37,6 +26,7 @@ function foodInject(foodList) {
 		var foodTypes = '';
 		var foodPrice = '';
 		var foodSize = '';
+		var breeds = '';
 
 		// Go through the loop and list each brand here
 		for (type in foodList[entry].types) {
@@ -48,6 +38,19 @@ function foodInject(foodList) {
 					img = `<img src="img/chuck.jpg" id=foodImg>`
 				} else if (foodList[entry].name === "Purina") {
 					img = `<img src="img/purina.png" id=foodImg>`
+				} else if (foodList[entry].name === "Purrina") {
+					img = `<img src="img/purrina.png" id=foodImg>`
+				} else {
+					img = `<img src="img/meowmeal.jpg" id=foodImg>`
+				}
+				// If catfood is chosen, the breeds need to be added to the product
+				if (foodList[entry].breeds){
+					breeds = `<ul>`;
+					for (var i = 0; i < foodList[entry].breeds.length; i++) {
+						console.log('foodList[entry].breeds', foodList[entry].breeds[i]);
+						breeds += `<li>${foodList[entry].breeds[i]}</li>`;
+					}
+					breeds += `</ul>`;
 				}
 
 				foodTypes = `<div id=foodType>Type: ${foodList[entry].types[type].type}`;
@@ -55,14 +58,10 @@ function foodInject(foodList) {
 				foodPrice = `<li>Price: ${foodList[entry].types[type].volumes[item].price}</li></ul></div></div>`;
 				
 				//output content here
-				content.innerHTML += brand + img + foodTypes + foodSize + foodPrice;
+				content.innerHTML += brand + img + breeds + foodTypes + foodSize + foodPrice;
 			}
 		}	
 	}
-
-	myRequest.open("GET", "catfood.json");
-
-	myRequest.send();
 }
 
 // Create an XHR object
@@ -77,3 +76,7 @@ myRequest.open("GET", "dogfood.json");
 
 // Tell the XHR object to start
 myRequest.send();
+
+//Load catfood file
+// myRequest.open("GET", "catfood.json");
+// myRequest.send();
