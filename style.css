@@ -1,0 +1,19 @@
+body {
+	background: white;
+}
+#foodSquare { 
+	margin-left: 40px;
+	background: white;
+}
+#foodBrands {
+	display: block;
+	float: left;
+	margin: 20px 40px;
+	padding-left:20px;
+}
+#foodBrands h1 {
+	text-align: center;
+}
+#foodType ul {
+	list-style: none;
+}

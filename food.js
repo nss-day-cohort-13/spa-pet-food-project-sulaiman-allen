@@ -3,7 +3,15 @@ function afterLoad () {
 	console.log("IN after load");
 	var foodList = JSON.parse(this.responseText);
 
-	foodInject(foodList);
+	if (foodList.dog_brands) {
+		console.log("Dog");
+		foodInject(foodList.dog_brands);
+	} else {
+		console.log(foodList)
+		console.log("Cat");
+	}
+
+	
 
 	// this listens for one of the buttons to be pressed and launches the function to delete it from the list
 	// document.getElementById("playback").addEventListener("click", songDelete);
@@ -14,13 +22,15 @@ function ifXHRFails() {
 	console.log("loading of file failed");
 }
 
-function foodInject(foodList, brands, foodTypes, foodPrice, foodSize) {
+function foodInject(foodList) {
+
+	console.log("IN Foodinject");
 
 	
 	var content = document.getElementById("foodSquare");
 
 	// inject food content back into the DOM
-	for (entry in foodList.dog_brands) {
+	for (entry in foodList) {
 
 		var brand = '';
 		var img = '';
@@ -29,32 +39,30 @@ function foodInject(foodList, brands, foodTypes, foodPrice, foodSize) {
 		var foodSize = '';
 
 		// Go through the loop and list each brand here
-		for (type in foodList.dog_brands[entry].types) {
+		for (type in foodList[entry].types) {
+			for (item in foodList[entry].types[type].volumes) {
+				brand = `<div id=foodBrands><h1>${foodList[entry].name}</h1>`;
 
-			// foodTypes += `<div id=foodType>${foodList.dog_brands[entry].types[type].type}`;
-
-			for (item in foodList.dog_brands[entry].types[type].volumes) {
-				brand = `<div id=foodBrands><h1>${foodList.dog_brands[entry].name}</h1>`;
-
-				if (foodList.dog_brands[entry].name === "Chuck Wagon"){
+				// Chose image for the product
+				if (foodList[entry].name === "Chuck Wagon"){
 					img = `<img src="img/chuck.jpg" id=foodImg>`
-				} else if (foodList.dog_brands[entry].name === "Purina") {
+				} else if (foodList[entry].name === "Purina") {
 					img = `<img src="img/purina.png" id=foodImg>`
 				}
 
-				foodTypes = `<div id=foodType>Type: ${foodList.dog_brands[entry].types[type].type}`;
-				foodSize = `<ul id=foodList><li>${foodList.dog_brands[entry].types[type].volumes[item].name}</li>`;
-				foodPrice = `<li>${foodList.dog_brands[entry].types[type].volumes[item].price}</li></ul></div></div>`;
+				foodTypes = `<div id=foodType>Type: ${foodList[entry].types[type].type}`;
+				foodSize = `<ul id=foodList><li>Size: ${foodList[entry].types[type].volumes[item].name}</li>`;
+				foodPrice = `<li>Price: ${foodList[entry].types[type].volumes[item].price}</li></ul></div></div>`;
 				
 				//output content here
-
 				content.innerHTML += brand + img + foodTypes + foodSize + foodPrice;
 			}
-		}
-
-		// content.innerHTML += brand + foodTypes + foodSize + foodPrice;
-	
+		}	
 	}
+
+	myRequest.open("GET", "catfood.json");
+
+	myRequest.send();
 }
 
 // Create an XHR object
