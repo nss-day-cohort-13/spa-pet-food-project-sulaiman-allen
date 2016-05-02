@@ -23,6 +23,7 @@ function foodInject(foodList, brands, foodTypes, foodPrice, foodSize) {
 	for (entry in foodList.dog_brands) {
 
 		var brand = '';
+		var img = '';
 		var foodTypes = '';
 		var foodPrice = '';
 		var foodSize = '';
@@ -34,13 +35,20 @@ function foodInject(foodList, brands, foodTypes, foodPrice, foodSize) {
 
 			for (item in foodList.dog_brands[entry].types[type].volumes) {
 				brand = `<div id=foodBrands><h1>${foodList.dog_brands[entry].name}</h1>`;
-				foodTypes = `<div id=foodType>${foodList.dog_brands[entry].types[type].type}`;
-				foodSize = `${foodList.dog_brands[entry].types[type].volumes[item].name}`;
-				foodPrice = `${foodList.dog_brands[entry].types[type].volumes[item].price}</div></div>`;
+
+				if (foodList.dog_brands[entry].name === "Chuck Wagon"){
+					img = `<img src="img/chuck.jpg" id=foodImg>`
+				} else if (foodList.dog_brands[entry].name === "Purina") {
+					img = `<img src="img/purina.png" id=foodImg>`
+				}
+
+				foodTypes = `<div id=foodType>Type: ${foodList.dog_brands[entry].types[type].type}`;
+				foodSize = `<ul id=foodList><li>${foodList.dog_brands[entry].types[type].volumes[item].name}</li>`;
+				foodPrice = `<li>${foodList.dog_brands[entry].types[type].volumes[item].price}</li></ul></div></div>`;
 				
 				//output content here
 
-				content.innerHTML += brand + foodTypes + foodSize + foodPrice;
+				content.innerHTML += brand + img + foodTypes + foodSize + foodPrice;
 			}
 		}
 
