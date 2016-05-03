@@ -5,6 +5,11 @@ function afterLoad () {
 	// Load the dog list in
 	if (foodList.dog_brands) {
 		foodInject(foodList.dog_brands);
+
+		//Load catfood file
+		myRequest.open("GET", "catfood.json");
+		myRequest.send();
+		
 	} else { // Or load the cat list
 		foodInject(foodList.brands)
 	}
@@ -47,7 +52,6 @@ function foodInject(foodList) {
 				if (foodList[entry].breeds){
 					breeds = `<ul>`;
 					for (var i = 0; i < foodList[entry].breeds.length; i++) {
-						console.log('foodList[entry].breeds', foodList[entry].breeds[i]);
 						breeds += `<li>${foodList[entry].breeds[i]}</li>`;
 					}
 					breeds += `</ul>`;
@@ -60,7 +64,7 @@ function foodInject(foodList) {
 				//output content here
 				content.innerHTML += brand + img + breeds + foodTypes + foodSize + foodPrice;
 			}
-		}	
+		}
 	}
 }
 
@@ -76,7 +80,3 @@ myRequest.open("GET", "dogfood.json");
 
 // Tell the XHR object to start
 myRequest.send();
-
-//Load catfood file
-// myRequest.open("GET", "catfood.json");
-// myRequest.send();
